@@ -1,6 +1,6 @@
 // playlog 서비스 워커 — 앱처럼 빨리 열리고, 인터넷이 끊겨도 화면은 뜨게 함
 // 파일을 고쳐서 배포할 때마다 VERSION 숫자를 올려 주세요. (그래야 폰에 새 파일이 받아짐)
-var VERSION = 'playlog-v3';
+var VERSION = 'playlog-v4';
 
 // 처음 설치할 때 미리 받아 둘 파일
 var CORE = [
