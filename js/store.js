@@ -47,6 +47,8 @@ window.PLAYLOG_STORE = (function () {
     if (/rate limit/i.test(m)) return '요청이 너무 많아요. 잠시 후 다시 시도해 주세요.';
     if (/Failed to fetch|NetworkError/i.test(m)) return '서버에 연결할 수 없어요. 인터넷 연결을 확인해 주세요.';
     if (/provider is not enabled|Unsupported provider/i.test(m)) return 'Supabase에서 카카오 로그인이 아직 켜져 있지 않아요.';
+    if (/Bucket not found|relation .*profiles.* does not exist|Could not find the table/i.test(m)) return '프로필 저장소가 아직 준비되지 않았어요. (supabase/profiles.sql 실행 필요)';
+    if (/exceeded the maximum allowed size|Payload too large/i.test(m)) return '사진이 너무 커요. 다른 사진으로 해 주세요.';
     if (/access_denied|cancel/i.test(m)) return '카카오 로그인을 취소했어요.';
     if (/email/i.test(m) && /missing|provider|required/i.test(m)) return '카카오에서 이메일을 받지 못했어요. 카카오 동의 항목에서 이메일을 켜 주세요.';
     return m || '문제가 생겼어요. 다시 시도해 주세요.';
@@ -104,7 +106,63 @@ window.PLAYLOG_STORE = (function () {
         if (res.error) throw res.error;
       });
     },
-    // 닉네임: 직접 정한 것 → 구글 이름 → 이메일 앞부분
+    /* ---------- 내 정보 (프로필) ---------- */
+    // 앱에서 직접 바꾼 값(profiles 테이블)이 있으면 그걸, 없으면 카카오에서 받아온 값을 씀
+    getProfile: function (user) {
+      var self = this;
+      var m = (user && user.user_metadata) || {};
+      var base = {
+        id: user ? user.id : null,
+        email: user ? (user.email || m.email || '') : '',
+        nickname: self.displayName(user),
+        avatar: m.avatar_url || m.picture || '',
+        provider: user && user.app_metadata ? user.app_metadata.provider : ''
+      };
+      if (!live || !user) return Promise.resolve(base);
+      return client.from('profiles').select('nickname, avatar_url').eq('id', user.id).maybeSingle().then(function (res) {
+        // 테이블이 아직 없거나 오류여도 카카오 값으로 계속 동작
+        if (!res.error && res.data) {
+          if (res.data.nickname) base.nickname = res.data.nickname;
+          if (res.data.avatar_url) base.avatar = res.data.avatar_url;
+        }
+        return base;
+      });
+    },
+    // 사진 파일을 256px 정사각 JPEG로 줄여서 올리고 주소를 돌려줌
+    uploadAvatar: function (user, file) {
+      return new Promise(function (resolve, reject) {
+        if (!/^image\/(jpeg|png|webp|gif|heic|heif)$/i.test(file.type || '')) return reject(new Error('사진 파일(JPG, PNG)만 올릴 수 있어요.'));
+        var img = new Image();
+        var url = URL.createObjectURL(file);
+        img.onload = function () {
+          var S = 256, side = Math.min(img.naturalWidth, img.naturalHeight);
+          var cv = document.createElement('canvas');
+          cv.width = S; cv.height = S;
+          cv.getContext('2d').drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, S, S);
+          URL.revokeObjectURL(url);
+          cv.toBlob(function (blob) { blob ? resolve(blob) : reject(new Error('사진을 읽지 못했어요.')); }, 'image/jpeg', 0.86);
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('사진을 읽지 못했어요. 다른 사진으로 해 주세요.')); };
+        img.src = url;
+      }).then(function (blob) {
+        var path = user.id + '/avatar-' + Date.now() + '.jpg'; // 파일 이름을 매번 바꿔서 예전 사진이 캐시로 남지 않게
+        return client.storage.from('avatars').upload(path, blob, { contentType: 'image/jpeg', upsert: true }).then(function (res) {
+          if (res.error) throw res.error;
+          return client.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+        });
+      });
+    },
+    // changes: { nickname, avatar_url } — avatar_url 이 '' 이면 카카오 사진으로 되돌림
+    saveProfile: function (user, changes) {
+      var row = { id: user.id, updated_at: new Date().toISOString() };
+      if (changes.nickname !== undefined) row.nickname = changes.nickname;
+      if (changes.avatar_url !== undefined) row.avatar_url = changes.avatar_url || null;
+      return client.from('profiles').upsert(row).then(function (res) {
+        if (res.error) throw res.error;
+      });
+    },
+
+    // 닉네임: 직접 정한 것 → 카카오 닉네임 → 이메일 앞부분
     displayName: function (user) {
       var m = (user && user.user_metadata) || {};
       return m.nickname || m.full_name || m.name || (user && user.email ? user.email.split('@')[0] : '');
