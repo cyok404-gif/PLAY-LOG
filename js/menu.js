@@ -52,7 +52,6 @@
         '<div class="menu-me">' + avatarHtml(p, 'ava-md') +
           '<span><strong>' + esc(p.nickname) + '</strong><small>' + esc(p.email) + '</small></span></div>' +
         '<a href="profile.html">내 정보 수정</a>' +
-        '<a href="records.html">내 기록</a>' +
         '<button type="button" data-act="logout">로그아웃</button>';
     } else {
       pop.innerHTML = '<a href="login.html">카카오로 로그인</a>';
