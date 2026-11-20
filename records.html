@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기록 — playlog</title>
+<meta name="description" content="달력과 리스트로 보는 내 보드게임·머더미스터리 플레이 기록.">
+<meta name="theme-color" content="#F3DE8E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="playlog">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=IBM+Plex+Sans+KR:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app sans">
+
+  <header class="topbar flush">
+    <a href="index.html" class="wordmark">playlog</a>
+    <div class="topbar-actions">
+      <button type="button" class="round-btn" aria-label="사용자 검색">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
+      </button>
+      <button type="button" class="round-btn" aria-label="메뉴">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="page-head">
+    <div class="page-head-text">
+      <h1 class="page-title">YOUR PLAY</h1>
+      <span class="page-sub" id="month-summary"></span>
+    </div>
+    <div class="view-toggle" role="group" aria-label="보기 방식">
+      <button type="button" class="vseg on" data-view="cal" aria-pressed="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 9.5h16M8 3v4M16 3v4"/></svg>
+        달력
+      </button>
+      <button type="button" class="vseg" data-view="list" aria-pressed="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" fill="currentColor"/><circle cx="4.5" cy="12" r="1" fill="currentColor"/><circle cx="4.5" cy="18" r="1" fill="currentColor"/></svg>
+        리스트
+      </button>
+    </div>
+  </div>
+
+  <main>
+    <!-- 달력 보기 -->
+    <div id="view-cal">
+      <section class="panel cal" id="cal-panel" aria-label="달력">
+        <div class="month-nav">
+          <button type="button" class="navbtn" data-month="-1" aria-label="이전 달"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <span class="month-label" data-month-label></span>
+          <button type="button" class="navbtn" data-month="1" aria-label="다음 달"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="grid weekdays" aria-hidden="true">
+          <span class="sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+        <div class="grid" id="cal-grid"></div>
+      </section>
+
+      <section class="panel day-panel" aria-labelledby="day-title">
+        <h2 class="day-title" id="day-title"></h2>
+        <div id="day-list" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <!-- 리스트 보기 -->
+    <div id="view-list" hidden>
+      <div class="month-nav bare">
+        <button type="button" class="navbtn" data-month="-1" aria-label="이전 달"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <span class="month-label" data-month-label></span>
+        <button type="button" class="navbtn" data-month="1" aria-label="다음 달"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+      <section class="panel list-panel" id="list-panel" aria-label="기록 목록"></section>
+    </div>
+  </main>
+
+  <div class="dock">
+    <nav class="tabbar" aria-label="주요 메뉴">
+      <a href="index.html" class="tab">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/></svg>
+        홈
+        <span class="tab-dot" aria-hidden="true"></span>
+      </a>
+      <a href="records.html" class="tab" aria-current="page">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 9.5h16M8 3v4M16 3v4"/></svg>
+        기록
+        <span class="tab-dot" aria-hidden="true"></span>
+      </a>
+      <a href="#" class="tab">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h14a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-7.5L7 20.5V17H5a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2z"/><path d="M12 7.6l1.05 2.13 2.35.34-1.7 1.66.4 2.34L12 12.96l-2.1 1.11.4-2.34-1.7-1.66 2.35-.34z"/></svg>
+        리뷰
+        <span class="tab-dot" aria-hidden="true"></span>
+      </a>
+    </nav>
+    <a href="record.html" class="fab" aria-label="기록하기">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+    </a>
+  </div>
+
+</div>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/records.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

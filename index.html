@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>playlog — 오늘 뭐 하지?</title>
+<meta name="description" content="몇 명이서, 얼마나 오래? 인원과 시간에 맞는 보드게임과 머더미스터리 시나리오를 골라 주고, 플레이 기록을 남기는 플레이로그.">
+<meta name="theme-color" content="#F3DE8E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="playlog">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=IBM+Plex+Sans+KR:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <a href="index.html" class="wordmark">playlog</a>
+    <div class="topbar-actions">
+      <button type="button" class="round-btn" aria-label="사용자 검색">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
+      </button>
+      <button type="button" class="round-btn" aria-label="메뉴">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1 class="hero-title"><span>WHO’S<br>IN?</span><svg aria-hidden="true" width="104" height="92" viewBox="0 0 130 114">
+      <ellipse cx="72" cy="106" rx="48" ry="5" fill="#141414" opacity=".12"/>
+      <g transform="translate(-6 28) rotate(-8 46 46)" stroke="#141414" stroke-width="2.5" stroke-linejoin="round">
+        <polygon points="46,12 75.4,29 46,46 16.6,29" fill="#DC8A80"/>
+        <polygon points="16.6,29 46,46 46,80 16.6,63" fill="#C94B3C"/>
+        <polygon points="46,46 75.4,29 75.4,63 46,80" fill="#A53E31"/>
+        <g fill="#141414" stroke="none">
+          <ellipse cx="46" cy="29" rx="6.5" ry="3.8"/>
+          <ellipse cx="25.4" cy="44.3" rx="3.2" ry="4.4" transform="rotate(-28 25.4 44.3)"/>
+          <ellipse cx="37.2" cy="64.7" rx="3.2" ry="4.4" transform="rotate(-28 37.2 64.7)"/>
+          <ellipse cx="53.4" cy="50.3" rx="3.2" ry="4.4" transform="rotate(28 53.4 50.3)"/>
+          <ellipse cx="60.7" cy="54.5" rx="3.2" ry="4.4" transform="rotate(28 60.7 54.5)"/>
+          <ellipse cx="68.1" cy="58.8" rx="3.2" ry="4.4" transform="rotate(28 68.1 58.8)"/>
+        </g>
+      </g>
+      <g transform="translate(4 -24) rotate(12 94 74)" stroke="#141414" stroke-width="2.5" stroke-linejoin="round">
+        <polygon points="94,46 118.2,60 94,74 69.8,60" fill="#B4D3DC"/>
+        <polygon points="69.8,60 94,74 94,102 69.8,88" fill="#76AFC0"/>
+        <polygon points="94,74 118.2,60 118.2,88 94,102" fill="#6495A3"/>
+        <g fill="#141414" stroke="none">
+          <ellipse cx="86" cy="60" rx="4.6" ry="2.7"/>
+          <ellipse cx="102" cy="60" rx="4.6" ry="2.7"/>
+          <ellipse cx="81.9" cy="81" rx="2.8" ry="3.8" transform="rotate(-28 81.9 81)"/>
+          <ellipse cx="101.3" cy="78.2" rx="2.8" ry="3.8" transform="rotate(28 101.3 78.2)"/>
+          <ellipse cx="110.9" cy="83.8" rx="2.8" ry="3.8" transform="rotate(28 110.9 83.8)"/>
+        </g>
+      </g>
+    </svg></h1>
+  </div>
+
+  <main>
+    <!-- 오늘의 추천: 위(필터) / 아래(결과) 두 조각이 절취선으로 이어진 티켓 -->
+    <section class="ticket" aria-label="오늘의 추천">
+      <div class="ticket-top">
+        <div class="segmented" role="group" aria-label="게임 종류">
+          <button type="button" class="seg on" data-kind="board" aria-pressed="true">보드게임</button>
+          <button type="button" class="seg" data-kind="mm" aria-pressed="false">머더미스터리</button>
+        </div>
+
+        <div class="filters">
+          <span class="filter-label" id="people-label">몇 명이서?</span>
+          <div class="row six" id="people-chips" role="group" aria-labelledby="people-label"></div>
+
+          <span class="filter-label spaced" id="time-label">얼마나 오래?</span>
+          <div class="row five" id="time-chips" role="group" aria-labelledby="time-label"></div>
+        </div>
+      </div>
+
+      <div class="ticket-bottom">
+        <div class="card-head">
+          <h2 class="card-title">LET’S PLAY !</h2>
+          <a href="#" class="more">더보기<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+        </div>
+        <div id="pick-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="recent-title">
+      <div class="card-head">
+        <h2 class="card-title" id="recent-title">YOUR PLAY</h2>
+        <a href="records.html?view=list" class="more">더보기<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      </div>
+      <!-- 데모 모드에선 아래 시안 그대로, Supabase 연결 시 내 최근 기록 3개로 바뀜 (app.js) -->
+      <div id="recent-list">
+      <a href="#" class="rrow first">
+        <span class="th" aria-hidden="true"><img src="assets/img/moonstone.png" alt=""></span>
+        <span class="row-body">
+          <span class="row-name">문스톤 저택 살인 사건</span>
+          <span class="tag">머더미스터리</span>
+          <span class="row-meta">11월 15일 · 4명 · 범인 적중</span>
+        </span>
+        <span class="score"><span class="star" aria-hidden="true">★</span><span class="sr">평점 </span>3.5</span>
+      </a>
+      <a href="game.html" class="rrow">
+        <span class="th" aria-hidden="true"><img src="assets/img/wingspan.png" alt=""></span>
+        <span class="row-body">
+          <span class="row-name">윙스팬</span>
+          <span class="row-meta">11월 14일 · 4명 · 승리</span>
+        </span>
+        <span class="score"><span class="star" aria-hidden="true">★</span><span class="sr">평점 </span>5.0</span>
+      </a>
+      <a href="#" class="rrow">
+        <span class="th" aria-hidden="true"><img src="assets/img/splendor.png" alt=""></span>
+        <span class="row-body">
+          <span class="row-name">스플렌더</span>
+          <span class="row-meta">11월 14일 · 4명 · 2위</span>
+        </span>
+        <span class="score"><span class="star" aria-hidden="true">★</span><span class="sr">평점 </span>4.0</span>
+      </a>
+      </div>
+    </section>
+  </main>
+
+  <div class="dock">
+    <nav class="tabbar" aria-label="주요 메뉴">
+      <a href="index.html" class="tab" aria-current="page">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/></svg>
+        홈
+        <span class="tab-dot" aria-hidden="true"></span>
+      </a>
+      <a href="records.html" class="tab">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 9.5h16M8 3v4M16 3v4"/></svg>
+        기록
+        <span class="tab-dot" aria-hidden="true"></span>
+      </a>
+      <a href="#" class="tab">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h14a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-7.5L7 20.5V17H5a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2z"/><path d="M12 7.6l1.05 2.13 2.35.34-1.7 1.66.4 2.34L12 12.96l-2.1 1.11.4-2.34-1.7-1.66 2.35-.34z"/></svg>
+        리뷰
+        <span class="tab-dot" aria-hidden="true"></span>
+      </a>
+    </nav>
+    <a href="record.html" class="fab" aria-label="기록하기">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+    </a>
+  </div>
+
+</div>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

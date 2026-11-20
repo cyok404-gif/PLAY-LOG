@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로그인 — playlog</title>
+<meta name="theme-color" content="#F3DE8E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="playlog">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=IBM+Plex+Sans+KR:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app sans form-page">
+
+  <header class="topbar flush">
+    <a href="index.html" class="wordmark">playlog</a>
+  </header>
+
+  <div class="form-hero">
+    <h1 class="page-title">WELCOME<br>TO PLAY!</h1>
+    <p>카카오 계정으로 바로 시작해요</p>
+  </div>
+
+  <main>
+    <div class="form-card">
+      <p class="notice info" id="demo-note" hidden>
+        아직 Supabase가 연결되지 않아 데모 모드예요. <code>js/config.js</code>에 프로젝트 주소와 키를 넣으면 로그인할 수 있어요.
+      </p>
+      <p class="notice info" id="file-note" hidden>
+        카카오 로그인은 파일을 더블클릭해 연 화면에서는 동작하지 않아요. 로컬 서버(<code>http://localhost:5500</code>)나 배포한 주소로 열어 주세요.
+      </p>
+
+      <button type="button" class="btn-kakao" id="kakao">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000000" d="M12 3.6c-5.13 0-9.3 3.27-9.3 7.3 0 2.6 1.73 4.88 4.34 6.17l-.9 3.3c-.08.29.25.52.5.35l3.94-2.62c.46.06.93.1 1.42.1 5.13 0 9.3-3.27 9.3-7.3S17.13 3.6 12 3.6z"/></svg>
+        <span id="kakao-label">카카오로 시작하기</span>
+      </button>
+      <p class="fine">처음이면 자동으로 가입돼요. 내 기록은 나만 볼 수 있어요.</p>
+
+      <p class="notice error" id="msg-error" role="alert" hidden></p>
+    </div>
+  </main>
+
+</div>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/login.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

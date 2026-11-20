@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기록하기 — playlog</title>
+<meta name="theme-color" content="#F3DE8E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="playlog">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=IBM+Plex+Sans+KR:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app sans rec-page">
+
+  <header class="topbar detail rec-head">
+    <a href="index.html" class="round-btn" id="back" aria-label="닫기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </a>
+    <h1 class="rec-title">NEW PLAY</h1>
+    <span aria-hidden="true"></span>
+  </header>
+
+  <main>
+    <p class="demo-banner" id="demo-note" hidden>지금은 데모 모드라 저장되지 않아요. Supabase를 연결하면 실제로 저장돼요.</p>
+
+    <form class="rec-form" id="play-form" novalidate>
+      <!-- 어떤 게임? -->
+      <section class="panel rec-card" aria-labelledby="g-lbl">
+        <span id="g-lbl" class="lbl">어떤 게임?</span>
+        <label class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
+          <span class="sr">게임 검색</span>
+          <input type="search" id="game" name="game" list="game-list" autocomplete="off" maxlength="80" placeholder="게임 이름으로 찾기">
+        </label>
+        <datalist id="game-list"></datalist>
+        <span class="hint" id="recent-label">최근에 한 게임</span>
+        <div class="game-grid" id="game-grid" role="group" aria-labelledby="recent-label"></div>
+      </section>
+
+      <!-- 언제? -->
+      <section class="panel rec-card inline">
+        <label for="date" class="lbl">언제?</label>
+        <span class="date-btn">
+          <span id="date-text"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 9.5h16M8 3v4M16 3v4"/></svg>
+          <input type="date" id="date" name="date" required>
+        </span>
+      </section>
+
+      <!-- 누구랑? -->
+      <section class="panel rec-card" aria-labelledby="p-lbl">
+        <span id="p-lbl" class="lbl">누구랑? <small id="people-count"></small></span>
+        <div class="chips" id="people" role="group" aria-labelledby="p-lbl"></div>
+        <div class="add-person" id="add-person" hidden>
+          <label class="sr" for="new-person">함께한 사람 이름</label>
+          <input class="input compact" id="new-person" maxlength="20" autocomplete="off" placeholder="이름">
+          <button type="button" class="pill on" id="add-ok">추가</button>
+        </div>
+      </section>
+
+      <!-- 점수 -->
+      <section class="panel rec-card tight" aria-labelledby="s-lbl">
+        <span id="s-lbl" class="lbl">점수 <small>가장 높은 점수가 승리로 표시돼요</small></span>
+        <div id="score-rows"></div>
+      </section>
+
+      <!-- 별점 -->
+      <section class="panel rec-card inline slim">
+        <span id="r-lbl" class="lbl">이번 판 어땠어요?</span>
+        <div class="rate" id="rate" role="group" aria-labelledby="r-lbl"></div>
+      </section>
+
+      <!-- 더 남기기 -->
+      <section class="panel rec-card more-card">
+        <button type="button" class="more-toggle" id="more-toggle" aria-expanded="false" aria-controls="more-body">
+          더 남기기
+          <span>장소 · 시간 · 사진 · 한 줄 감상<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+        </button>
+        <div class="more-body" id="more-body" hidden>
+          <div class="field-row">
+            <div class="field">
+              <label for="place">장소</label>
+              <input class="input compact" id="place" name="place" maxlength="40" list="place-list" placeholder="집, 보드게임 카페…">
+              <datalist id="place-list"></datalist>
+            </div>
+            <div class="field">
+              <label for="minutes">플레이 시간</label>
+              <input class="input compact" id="minutes" name="minutes" inputmode="numeric" maxlength="6" placeholder="70분">
+            </div>
+          </div>
+          <label class="photo-btn">
+            <input type="file" id="photo" accept="image/*" class="sr">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <span id="photo-text">사진 추가</span>
+          </label>
+          <div class="field">
+            <label for="memo">한 줄 감상</label>
+            <textarea class="input compact" id="memo" name="memo" maxlength="500" placeholder="오늘 판은 어땠나요?"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <p class="notice error" id="msg-error" role="alert" hidden></p>
+
+      <div class="save-bar">
+        <button type="submit" class="btn-primary save" id="submit">기록 저장</button>
+      </div>
+    </form>
+  </main>
+
+</div>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/record.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

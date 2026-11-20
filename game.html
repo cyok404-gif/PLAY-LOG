@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>윙스팬 — playlog</title>
+<meta name="description" content="윙스팬 내 플레이 기록과 다른 사람들의 리뷰.">
+<meta name="theme-color" content="#F3DE8E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="playlog">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&amp;family=IBM+Plex+Sans+KR:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<div class="app sans">
+
+  <header class="topbar detail">
+    <a href="index.html" class="round-btn" id="back" aria-label="뒤로">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </a>
+    <div class="topbar-actions">
+      <button type="button" class="round-btn" id="wish" aria-label="위시에 담기" aria-pressed="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3C8.6 18 3 14.1 3 9.2 3 6.3 5.2 4.2 7.8 4.2c1.8 0 3.3 1 4.2 2.5.9-1.5 2.4-2.5 4.2-2.5 2.6 0 4.8 2.1 4.8 5 0 4.9-5.6 8.8-9 11.1z"/></svg>
+      </button>
+      <button type="button" class="round-btn" aria-label="더보기 메뉴">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="detail-body">
+    <section class="panel game-info" aria-label="게임 정보">
+      <img class="game-cover" src="assets/img/wingspan.png" alt="윙스팬 커버">
+      <div class="game-info-body">
+        <div>
+          <h1 class="game-name">윙스팬</h1>
+          <div class="info-tags">
+            <span class="info-tag">1 ~ 5인</span><span class="info-tag">40 ~ 70분</span><span class="info-tag">엔진 빌딩</span>
+          </div>
+        </div>
+        <div class="big-rating">
+          <span class="star" aria-hidden="true">★</span>
+          <strong><span class="sr">전체 평점 </span>4.6</strong>
+          <small>리뷰 128개</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="my-title">
+      <div class="panel-head">
+        <h2 id="my-title" class="stitle">MY PLAY</h2>
+        <span class="my-rating">내 평점 <span class="star" aria-hidden="true">★</span>5.0</span>
+      </div>
+      <span class="my-summary">6판 · 4승 · 마지막 플레이 11월 19일</span>
+      <div id="plays"></div>
+      <button type="button" class="more-link" id="plays-toggle" aria-expanded="false" aria-controls="plays"></button>
+    </section>
+
+    <section class="panel" aria-labelledby="rv-title">
+      <div class="panel-head">
+        <h2 id="rv-title" class="stitle">REVIEWS</h2>
+        <span class="panel-note">최신순</span>
+      </div>
+      <article class="rv first">
+        <div class="rv-head">
+          <span class="ava a1" aria-hidden="true">보</span>
+          <span class="rv-who"><a href="#">보드게임하는곰</a><span>11월 18일 · 14판 플레이</span></span>
+          <span class="score sm"><span class="star" aria-hidden="true">★</span><span class="sr">평점 </span>5.0</span>
+        </div>
+        <p>카드 그림 보는 맛만으로도 충분해요. 3명일 때가 대기 시간도 짧고 제일 좋았어요.</p>
+      </article>
+      <article class="rv">
+        <div class="rv-head">
+          <span class="ava a2" aria-hidden="true">주</span>
+          <span class="rv-who"><a href="#">주사위요정</a><span>11월 12일 · 3판 플레이</span></span>
+          <span class="score sm"><span class="star" aria-hidden="true">★</span><span class="sr">평점 </span>4.5</span>
+        </div>
+        <p>처음엔 규칙이 많아 보였는데 두 판째부터 술술 돌아가요. 새 덕후 친구가 특히 좋아했어요.</p>
+      </article>
+      <article class="rv">
+        <div class="rv-head">
+          <span class="ava a3" aria-hidden="true">미</span>
+          <span class="rv-who"><a href="#">미플수집가</a><span>11월 3일 · 8판 플레이</span></span>
+          <span class="score sm"><span class="star" aria-hidden="true">★</span><span class="sr">평점 </span>4.0</span>
+        </div>
+        <p>5명은 조금 늘어져요. 2~3명 추천!</p>
+      </article>
+      <a href="#" class="more-link">리뷰 128개 모두 보기<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    </section>
+  </main>
+
+</div>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/game.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>
